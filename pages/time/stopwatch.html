@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stopwatch</title>
+</head>
+<body>
+<pre id="time">0:0:0:0</pre>
+<pre id="helper">d:h:m:s</pre>
+<button id="controller">Stop</button>
+<script>
+    const params = new URLSearchParams(window.location.search)
+    let type = params.get('type')
+    document.title = type
+    let time = {}
+    let bigger = {
+        'hour': 'day',
+        'minute': 'hour',
+        'second': 'minute'
+    }
+    let maxValue = {
+        'second': 59,
+        'minute': 59,
+        'hour': 23
+    }
+    setTime('s', 'second')
+    setTime('m', 'minute')
+    setTime('h', 'hour')
+    setTime('d', 'day')
+
+    function setTime(param, variable) {
+        time[variable] = parseInt(params.get(param))
+    }
+
+    let intervalId
+
+    function start() {
+        intervalId = setInterval(() => {
+            changeTime('second')
+            if (time.second >= 60) {
+                changeTime('minute')
+                time.second = 0
+            }
+            if (time.minute >= 60) {
+                changeTime('hour')
+                time.minute = 0
+            }
+            if (time.hour >= 24) {
+                changeTime('day')
+                time.hour = 0
+            }
+            document.getElementById('time').innerText = `${time.day}:${time.hour}:${time.minute}:${time.second}`
+            adjustHelperWidth()
+        }, 1000)
+    }
+
+    function changeTime(variable) {
+        if (type === 'timer') {
+            time[variable] -= 1
+            if (time[variable] === -1) {
+                if(variable === 'day') {
+                    window.alert("Time out")
+                    clearInterval(intervalId)
+                    return
+                }
+
+                time[variable] = maxValue[variable]
+                changeTime(bigger[variable])
+            }
+        } else {
+            time[variable] += 1
+        }
+    }
+
+    function adjustHelperWidth() {
+        document.getElementById('helper').innerText =
+            `${width('d', time.day)}:${width('h', time.hour)}:${width('m', time.minute)}:${width('s', time.second)}`
+    }
+
+    function width(letter, variable) {
+        return letter.repeat(variable.toString().length)
+    }
+
+    let button = document.getElementById('controller')
+    button.onclick = () => {
+        if (button.innerText === 'Stop') {
+            clearInterval(intervalId)
+            button.innerText = 'Continue'
+        } else {
+            start()
+            button.innerText = 'Stop'
+        }
+    }
+
+    start()
+</script>
+</body>
+</html>

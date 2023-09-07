@@ -1,0 +1,157 @@
+openapi: "3.0.3"
+info:
+  title: "rest API"
+  description: "rest API"
+  version: "1.0.0"
+servers:
+- url: "https://rest"
+paths:
+  /:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Hello World!"
+  /echo/{text}:
+    get:
+      description: ""
+      parameters:
+      - name: "text"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+  /html-template:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /monitoring:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map"
+  /rnd/{int}:
+    get:
+      description: ""
+      parameters:
+      - name: "int"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+  /rnd/str:
+    get:
+      description: ""
+      parameters:
+      - name: "symbols"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "length"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+  /time:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /time/stopwatch:
+    get:
+      description: ""
+      parameters:
+      - name: "d"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "h"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "m"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "s"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+  /time/timer:
+    get:
+      description: ""
+      parameters:
+      - name: "d"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "h"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "m"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "s"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+components:
+  schemas:
+    Map:
+      type: "object"
+      properties: {}
